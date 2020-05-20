@@ -1,6 +1,8 @@
-namespace MeilisearchDotnet {
+using System;
+
+namespace MeilisearchDotnet.Exceptions {
     [System.Serializable]
-    public class MeilisearchApiException : System.Exception
+    public class MeilisearchApiException : Exception
     {
         public MeilisearchApiException() { }
         public MeilisearchApiException(string message) : base(message) { }
