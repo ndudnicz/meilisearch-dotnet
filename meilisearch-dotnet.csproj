@@ -4,11 +4,21 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>meilisearch-dotnet</RootNamespace>
+    <PackageId>MeilisearchDotnet</PackageId>
+    <Version>0.0.1-a</Version>
+    <Authors>ndudnicz</Authors>
+    <Description>
+    WIP MeiliSearchDotnet is a client for MeiliSearch written in .NET standard 2.0. MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box.
+    </Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/ndudnicz/meilisearch-dotnet</RepositoryUrl>
+    <PackageTags>meilisearch;meili;meilisearchdotnet;meilisearch dotnet;meiliSearch-dotnet;meili-sdk;meili sdk</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <None Include="LICENSE" Pack="true" PackagePath="$(PackageLicenseFile)"/>
   </ItemGroup>
 
 </Project>

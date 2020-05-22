@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Net.Http;
-using MeilisearchDotnet.Types;
 using System.Threading.Tasks;
+using MeilisearchDotnet.Types;
 
 namespace MeilisearchDotnet
 {
@@ -35,7 +35,7 @@ namespace MeilisearchDotnet
         ///
 
         /**
-         *  Check if the server is healhty
+         * Check if the server is healhty
          */
         public async Task<bool> IsHealthy()
         {
@@ -53,7 +53,7 @@ namespace MeilisearchDotnet
         }
 
         /**
-         *  Set the healthyness to `health` value
+         * Set the healthyness to `health` value
          */
         public async Task<string> ChangeHealthTo(bool health)
         {
@@ -63,7 +63,7 @@ namespace MeilisearchDotnet
         }
 
         /**
-         *  Change the healthyness to healthy
+         * Change the healthyness to healthy
          */
         public Task<string> SetHealthy()
         {
@@ -100,6 +100,24 @@ namespace MeilisearchDotnet
             string url = "/version";
 
             return await Get<MeilisearchDotnet.Types.Version>(url);
+        }
+
+        /**
+         * Get the server consuption, RAM / CPU / Network
+         */
+        public async Task<MeilisearchDotnet.Types.SysInfo> SysInfo() {
+            string url = "/sys-info";
+
+            return await Get<MeilisearchDotnet.Types.SysInfo>(url);
+        }
+        
+        /**
+         * Get the server consuption, RAM / CPU / Network. All information as human readable
+         */
+        public async Task<MeilisearchDotnet.Types.SysInfoPretty> SysInfoPretty() {
+            string url = "/sys-info/pretty";
+
+            return await Get<MeilisearchDotnet.Types.SysInfoPretty>(url);
         }
     }
 }
