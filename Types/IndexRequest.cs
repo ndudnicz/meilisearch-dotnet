@@ -1,6 +1,6 @@
 namespace MeilisearchDotnet.Types {
-    public class IndexRequest {
+    public struct IndexRequest {
         public string uid { get; set; }
-       public string primaryKey { get; set; }
+        public string primaryKey { get; set; }
     }
 }

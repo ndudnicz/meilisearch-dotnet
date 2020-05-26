@@ -1,9 +1,9 @@
 namespace MeilisearchDotnet.Types {
-    public class UpdateType {
+    public struct UpdateType {
         public string Name { get; set; }
         public int Number { get; set; }
     }
-    public class Update {
+    public struct Update {
         public string Status { get; set; }
         public int UpdateId { get; set; }
 

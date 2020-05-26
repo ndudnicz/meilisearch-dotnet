@@ -85,7 +85,8 @@ namespace MeilisearchDotnet
          */
         public async Task<string> ChangeHealthTo(bool health) {
             string url = "/health";
-            StringContent payload = new StringContent("{\"health\":" + health.ToString().ToLower() + "}", Encoding.UTF8, "application/x-www-form-urlencoded");
+            string dataString = JsonSerializer.Serialize(new {health});
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
             return await Put<string>(url, payload);
         }
 
