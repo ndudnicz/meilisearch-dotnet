@@ -15,7 +15,7 @@ namespace MeilisearchDotnet
             }
         }
 
-        public async Task<T> Get<T>(string url) {
+        protected async Task<T> Get<T>(string url) {
             try {
                 HttpResponseMessage res = await httpClient.GetAsync(url);
                 if (res.IsSuccessStatusCode) {
@@ -28,7 +28,7 @@ namespace MeilisearchDotnet
             }
         }
 
-        public async Task<T> Post<T>(string url, StringContent payload) {
+        protected async Task<T> Post<T>(string url, StringContent payload) {
             try {
                 HttpResponseMessage res = await httpClient.PostAsync(url, payload);
                 if (res.IsSuccessStatusCode) {
@@ -53,7 +53,7 @@ namespace MeilisearchDotnet
         //     }
         // }
 
-        public async Task<T> Put<T>(string url, StringContent payload) {
+        protected async Task<T> Put<T>(string url, StringContent payload) {
             try {
                 HttpResponseMessage res = await httpClient.PutAsync(url, payload);
                  if (res.IsSuccessStatusCode) {
@@ -66,7 +66,7 @@ namespace MeilisearchDotnet
             }
         }
 
-        public async Task<T> Delete<T>(string url) {
+        protected async Task<T> Delete<T>(string url) {
             try {
                 HttpResponseMessage res = await httpClient.DeleteAsync(url);
                 if (res.IsSuccessStatusCode) {
@@ -79,7 +79,7 @@ namespace MeilisearchDotnet
             }
         }
 
-        public async Task<T> Send<T>(HttpRequestMessage req) {
+        protected async Task<T> Send<T>(HttpRequestMessage req) {
             try {
                 HttpResponseMessage res = await httpClient.SendAsync(req);
                 if (res.IsSuccessStatusCode) {

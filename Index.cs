@@ -225,5 +225,15 @@ namespace MeilisearchDotnet
 
             return await Get<T>(url);
         }
+
+        /// <summary>
+        /// Delete one document
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> DeleteDocument(string documentId)
+        {
+            string url = "/indexes/" + Uid + "/documents/" + documentId;
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
     }
 }
