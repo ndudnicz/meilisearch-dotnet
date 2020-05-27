@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 
-namespace MeilisearchDotnet.Types {
+namespace MeilisearchDotnet.Types
+{
 
-    public class SysInfoGlobal {
+    public class SysInfoGlobal
+    {
         public double? TotalMemory { get; set; }
         public double? UsedMemory { get; set; }
         public double? TotalSwap { get; set; }
@@ -11,21 +13,24 @@ namespace MeilisearchDotnet.Types {
         public double? OutputData { get; set; }
     }
 
-    public class SysInfoProcess {
+    public class SysInfoProcess
+    {
         public double? Memory { get; set; }
         public double? Cpu { get; set; }
     }
 
-    public class SysInfo {
+    public class SysInfo
+    {
         public double? MemoryUsage { get; set; }
         public IEnumerable<double?> ProcessorUsage { get; set; }
         public SysInfoGlobal Global { get; set; }
         public SysInfoProcess Process { get; set; }
     }
 
-/*****************************************************************************/
+    /*****************************************************************************/
 
-    public class SysInfoGlobalPretty {
+    public class SysInfoGlobalPretty
+    {
         public string TotalMemory { get; set; }
         public string UsedMemory { get; set; }
         public string TotalSwap { get; set; }
@@ -34,12 +39,14 @@ namespace MeilisearchDotnet.Types {
         public string OutputData { get; set; }
     }
 
-    public class SysInfoProcessPretty {
+    public class SysInfoProcessPretty
+    {
         public string Memory { get; set; }
         public string Cpu { get; set; }
     }
 
-    public class SysInfoPretty {
+    public class SysInfoPretty
+    {
         public string MemoryUsage { get; set; }
         public IEnumerable<string> ProcessorUsage { get; set; }
         public SysInfoGlobalPretty Global { get; set; }

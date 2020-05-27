@@ -22,9 +22,9 @@ namespace MeilisearchDotnet
             Uid = IndexUid;
         }
 
-        /**
-         * Get the informations about an update status
-         */
+        /// <summary>
+        /// Get the informations about an update status.
+        /// </summary>
         public async Task<MeilisearchDotnet.Types.Update> GetUpdateStatus(int updateId)
         {
             string url = "/indexes/" + Uid + "/updates/" + updateId.ToString();
@@ -55,9 +55,9 @@ namespace MeilisearchDotnet
             );
         }
 
-        /**
-         * Get the list of all updates
-         */
+        /// <summary>
+        /// Get the list of all updates
+        /// </summary>
         public async Task<IEnumerable<MeilisearchDotnet.Types.Update>> GetAllUpdateStatus()
         {
             string url = "/indexes/" + Uid + "/updates";
@@ -72,9 +72,9 @@ namespace MeilisearchDotnet
         ///
         /// INDEX
         ///
-        /**
-         * Show index information.
-         */
+        /// <summary>
+        /// Show index information
+        /// </summary>
         public async Task<MeilisearchDotnet.Types.IndexResponse> Show()
         {
             string url = "/indexes/" + Uid;
@@ -82,10 +82,10 @@ namespace MeilisearchDotnet
             return await Get<MeilisearchDotnet.Types.IndexResponse>(url);
         }
 
-        /**
-         * Update an index.
-         */
-        public async Task<MeilisearchDotnet.Types.IndexResponse> UpdateIndex(MeilisearchDotnet.Types.IndexRequest data)
+        /// <summary>
+        /// Update an index
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.IndexResponse> UpdateIndex(MeilisearchDotnet.Types.UpdateIndexRequest data)
         {
             string url = "/indexes/" + Uid;
             string dataString = JsonSerializer.Serialize(data);
@@ -94,15 +94,76 @@ namespace MeilisearchDotnet
             return await Put<MeilisearchDotnet.Types.IndexResponse>(url, payload);
         }
 
-        /**
-         * Delete an index.
-         */
-
+        /// <summary>
+        /// Delete an index.
+        /// </summary>
         public async Task<string> DeleteIndex()
         {
             string url = "/indexes/" + Uid;
 
             return await Delete<string>(url);
         }
+
+        ///
+        /// STATS
+        ///
+
+        /// <summary>
+        /// get stats of an index
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.IndexStats> GetStats()
+        {
+            string url = "/indexes/" + Uid + "/stats";
+
+            return await Get<MeilisearchDotnet.Types.IndexStats>(url);
+        }
+
+        ///
+        /// DOCUMENTS
+        ///
+
+        /// <summary>
+        /// Add or replace multiples documents to an index
+        /// </summary>
+        /* Example :
+        Meilisearch ms = new Meilisearch("http://localhost:7700", "keykeykey");
+        MeilisearchDotnet.Index i = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
+            uid = "zz",
+            primaryKey = "toto"
+        });
+
+        MeilisearchDotnet.Types.EnqueuedUpdate ret = await i.AddDocuments<Doc>(new List<Doc>() {
+            new Doc { Key1 = 222 },
+            new Doc { Key1 = 222 }
+        });
+
+        ret = await i.AddDocuments<Doc>(new List<Doc>() {
+            new Doc { Key1 = 222 },
+            new Doc { Key1 = 222 }
+        }, new MeilisearchDotnet.Types.AddDocumentParams {
+            primaryKey = "toto"
+        });
+         */
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> AddDocuments<T>(
+            IEnumerable<T> documents,
+            MeilisearchDotnet.Types.AddDocumentParams options = null
+        )
+        {
+            string url = null;
+
+            if (options != null)
+            {
+                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
+            }
+            else
+            {
+                url = "/indexes/" + Uid + "/documents";
+            }
+            string dataString = JsonSerializer.Serialize(documents);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
     }
 }
