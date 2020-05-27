@@ -1,9 +1,12 @@
 <h1 align="center">MeiliSearch .NET</h1>
 
 <h4 align="center">
+  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
   <a href="https://www.meilisearch.com">Website</a> |
+  <a href="https://blog.meilisearch.com">Blog</a> |
+  <a href="https://twitter.com/meilisearch">Twitter</a> |
   <a href="https://docs.meilisearch.com">Documentation</a> |
-  <a href="https://docs.meilisearch.com/resources/faq.html">FAQ</a>
+  <a href="https://docs.meilisearch.com/faq">FAQ</a>
 </h4>
 
 <p align="center">
@@ -22,6 +25,7 @@
 - [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
 
 ## 🔧 Installation
+It's available as NuGet package :
 ```bash
 dotnet add package MeilisearchDotnet --version 0.0.1-a
 ```
