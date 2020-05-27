@@ -165,5 +165,34 @@ namespace MeilisearchDotnet
             return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
         }
 
+        /// <summary>
+        /// Get documents of an index
+        /// </summary>
+        public async Task<T> GetDocuments<T>(
+            MeilisearchDotnet.Types.GetDocumentsParams options = null
+        )
+        {
+            string url = null;
+
+            if (options != null)
+            {
+                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
+            }
+            else
+            {
+                url = "/indexes/" + Uid + "/documents";
+            }
+            return await Get<T>(url);
+        }
+
+        /// <summary>
+        /// Get one document
+        /// </summary>
+        public async Task<T> GetDocument<T>(string documentId)
+        {
+            string url = "/indexes/" + Uid + "/documents/" + documentId;
+
+            return await Get<T>(url);
+        }
     }
 }
