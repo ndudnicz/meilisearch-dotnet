@@ -12,7 +12,9 @@ namespace MeilisearchDotnet
     {
         public string Host;
         public string ApiKey;
-        public Meilisearch(string host, string apiKey) : base(host, apiKey) {
+
+        public Meilisearch(string host, string apiKey) : base(host, apiKey)
+        {
             Host = host;
             ApiKey = apiKey;
         }
@@ -20,14 +22,16 @@ namespace MeilisearchDotnet
         /**
          * Return an Index instance
          */
-        public Index GetIndex(string indexUid) {
+        public Index GetIndex(string indexUid)
+        {
             return new Index(Host, ApiKey, indexUid);
         }
 
         /**
          * List all indexes in the database
          */
-        public async Task<IEnumerable<MeilisearchDotnet.Types.IndexResponse>> ListIndexes() {
+        public async Task<IEnumerable<MeilisearchDotnet.Types.IndexResponse>> ListIndexes()
+        {
             string url = "/indexes";
 
             return await Get<IEnumerable<MeilisearchDotnet.Types.IndexResponse>>(url);
@@ -36,7 +40,8 @@ namespace MeilisearchDotnet
         /**
          * Create a new index
          */
-        public async Task<Index> CreateIndex(MeilisearchDotnet.Types.IndexRequest data) {
+        public async Task<Index> CreateIndex(MeilisearchDotnet.Types.IndexRequest data)
+        {
             string url = "/indexes";
             string dataString = JsonSerializer.Serialize(data);
             StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/json");
@@ -53,7 +58,8 @@ namespace MeilisearchDotnet
         /**
          * Get private and public key
          */
-        public async Task<MeilisearchDotnet.Types.Keys> GetKeys() {
+        public async Task<MeilisearchDotnet.Types.Keys> GetKeys()
+        {
             string url = "/keys";
 
             return await Get<MeilisearchDotnet.Types.Keys>(url);
@@ -66,7 +72,8 @@ namespace MeilisearchDotnet
         /**
          * Check if the server is healhty
          */
-        public async Task<bool> IsHealthy() {
+        public async Task<bool> IsHealthy()
+        {
             string url = "/health";
 
             try
@@ -83,9 +90,10 @@ namespace MeilisearchDotnet
         /**
          * Set the healthyness to `health` value
          */
-        public async Task<string> ChangeHealthTo(bool health) {
+        public async Task<string> ChangeHealthTo(bool health)
+        {
             string url = "/health";
-            string dataString = JsonSerializer.Serialize(new {health});
+            string dataString = JsonSerializer.Serialize(new { health });
             StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
             return await Put<string>(url, payload);
         }
@@ -93,14 +101,16 @@ namespace MeilisearchDotnet
         /**
          * Change the healthyness to healthy
          */
-        public Task<string> SetHealthy() {
+        public Task<string> SetHealthy()
+        {
             return ChangeHealthTo(true);
         }
 
         /**
          * Change the healthyness to unhealthy
          */
-        public Task<string> SetUnhealthy(bool health) {
+        public Task<string> SetUnhealthy(bool health)
+        {
             return ChangeHealthTo(false);
         }
 
@@ -111,7 +121,8 @@ namespace MeilisearchDotnet
         /**
          * Get the stats of all the database
          */
-        public async Task<MeilisearchDotnet.Types.Stats> Stats() {
+        public async Task<MeilisearchDotnet.Types.Stats> Stats()
+        {
             string url = "/stats";
 
             return await Get<Stats>(url);
@@ -120,7 +131,8 @@ namespace MeilisearchDotnet
         /**
          * Get the version of MeiliSearch
          */
-        public async Task<MeilisearchDotnet.Types.Version> Version() {
+        public async Task<MeilisearchDotnet.Types.Version> Version()
+        {
             string url = "/version";
 
             return await Get<MeilisearchDotnet.Types.Version>(url);
@@ -129,7 +141,8 @@ namespace MeilisearchDotnet
         /**
          * Get the server consuption, RAM / CPU / Network
          */
-        public async Task<MeilisearchDotnet.Types.SysInfo> SysInfo() {
+        public async Task<MeilisearchDotnet.Types.SysInfo> SysInfo()
+        {
             string url = "/sys-info";
 
             return await Get<MeilisearchDotnet.Types.SysInfo>(url);
@@ -138,7 +151,8 @@ namespace MeilisearchDotnet
         /**
          * Get the server consuption, RAM / CPU / Network. All information as human readable
          */
-        public async Task<MeilisearchDotnet.Types.SysInfoPretty> SysInfoPretty() {
+        public async Task<MeilisearchDotnet.Types.SysInfoPretty> SysInfoPretty()
+        {
             string url = "/sys-info/pretty";
 
             return await Get<MeilisearchDotnet.Types.SysInfoPretty>(url);
