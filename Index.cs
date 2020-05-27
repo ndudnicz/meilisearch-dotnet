@@ -127,17 +127,17 @@ namespace MeilisearchDotnet
         /// </summary>
         /* Example :
         Meilisearch ms = new Meilisearch("http://localhost:7700", "keykeykey");
-        MeilisearchDotnet.Index i = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
+        MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
             uid = "zz",
             primaryKey = "toto"
         });
 
-        MeilisearchDotnet.Types.EnqueuedUpdate ret = await i.AddDocuments<Doc>(new List<Doc>() {
+        MeilisearchDotnet.Types.EnqueuedUpdate ret = await index.AddDocuments<Doc>(new List<Doc>() {
             new Doc { Key1 = 222 },
             new Doc { Key1 = 222 }
         });
 
-        ret = await i.AddDocuments<Doc>(new List<Doc>() {
+        ret = await index.AddDocuments<Doc>(new List<Doc>() {
             new Doc { Key1 = 222 },
             new Doc { Key1 = 222 }
         }, new MeilisearchDotnet.Types.AddDocumentParams {
@@ -164,6 +164,37 @@ namespace MeilisearchDotnet
 
             return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
         }
+
+        /// <summary>
+        /// Add or update multiples documents to an index
+        /// </summary>
+        /* Example :
+        await index.UpdateDocuments(new List<Doc>() {
+            new Doc { id = 222, value = 1 },
+            new Doc { id = 333, value = 1 }
+        });
+        */
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateDocuments<T>(
+            IEnumerable<T> documents,
+            MeilisearchDotnet.Types.AddDocumentParams options = null
+        )
+        {
+            string url = null;
+
+            if (options != null)
+            {
+                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
+            }
+            else
+            {
+                url = "/indexes/" + Uid + "/documents";
+            }
+            string dataString = JsonSerializer.Serialize(documents);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Put<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
 
         /// <summary>
         /// Get documents of an index
