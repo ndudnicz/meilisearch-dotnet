@@ -11,6 +11,7 @@
 
 <p align="center">
   <a href='https://github.com/ndudnicz/meilisearch-dotnet/actions?query=workflow%3A"default"'><img src="https://img.shields.io/github/workflow/status/ndudnicz/meilisearch-dotnet/default?style=for-the-badge"></a>
+  <a href='https://github.com/ndudnicz/meilisearch-dotnet/actions?query=workflow%3A"nuget-push"'><img src="https://img.shields.io/github/workflow/status/ndudnicz/meilisearch-dotnet/nuget-push?style=for-the-badge"></a>
   <a href="https://www.nuget.org/packages/MeilisearchDotnet"><img src="https://img.shields.io/nuget/v/MeilisearchDotnet?style=for-the-badge" alt="NuGet version"></a>
   <a href="https://github.com/ndudnicz/meilisearch-dotnet/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-informational?style=for-the-badge" alt="License"></a>
 </p>
