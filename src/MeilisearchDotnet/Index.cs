@@ -69,9 +69,22 @@ namespace MeilisearchDotnet
         /// SEARCH
         ///
 
+        /// <summary>
+        /// Search for documents into an index
+        /// <summary>
+        public async Task<MeilisearchDotnet.Types.SearchResponse<T>> Search<T>(
+            string query,
+            MeilisearchDotnet.Types.SearchRequest options = null
+        )
+        {
+            // TODO
+            throw new NotImplementedException();
+        }
+
         ///
         /// INDEX
         ///
+
         /// <summary>
         /// Show index information
         /// </summary>
@@ -235,5 +248,172 @@ namespace MeilisearchDotnet
 
             return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
         }
+
+        /// <summary>
+        /// Delete multiples documents of an index
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> DeleteDocuments(IEnumerable<string> documentsIds)
+        {
+            string url = "/indexes/" + Uid + "/documents/delete-batch";
+            string dataString = JsonSerializer.Serialize(documentsIds);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Delete all documents of an index
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> DeleteAllDocuments()
+        {
+            string url = "/indexes/" + Uid + "/documents";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        ///
+        /// SETTINGS
+        ///
+
+        /// <summary>
+        /// Retrieve all settings
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.Settings> GetSettings()
+        {
+            string url = "/indexes/" + Uid + "/settings";
+
+            return await Delete<MeilisearchDotnet.Types.Settings>(url);
+        }
+
+        /// <summary>
+        /// Update all settings
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateSettings(MeilisearchDotnet.Types.Settings settings)
+        {
+            string url = "/indexes/" + Uid + "/settings";
+            string dataString = JsonSerializer.Serialize(settings);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Reset settings
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> ResetSettings()
+        {
+            string url = "/indexes/" + Uid + "/settings";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        ///
+        /// SYNONYMS
+        ///
+
+        /// <summary>
+        /// Get the list of all synonyms
+        /// </summary>
+        public async Task<Dictionary<string, IEnumerable<string>>> GetSynonyms()
+        {
+            string url = "/indexes/" + Uid + "/settings/synonyms";
+
+            return await Get<Dictionary<string, IEnumerable<string>>>(url);
+        }
+
+        /// <summary>
+        /// Update the list of synonyms. Overwrite the old list.
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateSynonyms(Dictionary<string, IEnumerable<string>> synonyms)
+        {
+            string url = "/indexes/" + Uid + "/settings/synonyms";
+            string dataString = JsonSerializer.Serialize(synonyms);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Empty the synonyme list
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> ResetSynonyms()
+        {
+            string url = "/indexes/" + Uid + "/settings/synonyms";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        ///
+        /// STOP WORDS
+        ///
+
+        /// <summary>
+        /// Get the list of all stop-words
+        /// </summary>
+        public async Task<IEnumerable<string>> GetStopWords()
+        {
+            string url = "/indexes/" + Uid + "/settings/stop-words";
+
+            return await Get<IEnumerable<string>>(url);
+        }
+
+        /// <summary>
+        /// Update the list of stop-words. Overwrite the old list.
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateStopWords(IEnumerable<string> stopWords)
+        {
+            string url = "/indexes/" + Uid + "/settings/stop-words";
+            string dataString = JsonSerializer.Serialize(stopWords);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Empty the stop-words list
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> ResetStopWords()
+        {
+            string url = "/indexes/" + Uid + "/settings/stop-words";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        ///
+        /// RANKING RULES
+        ///
+
+        /// <summary>
+        /// Get the list of all ranking-rules
+        /// </summary>
+        public async Task<IEnumerable<string>> GetRankingRules()
+        {
+            string url = "/indexes/" + Uid + "/settings/ranking-rules";
+
+            return await Get<IEnumerable<string>>(url);
+        }
+
+        /// <summary>
+        /// Update the list of ranking-rules. Overwrite the old list.
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateRankingRules(IEnumerable<string> rankingRules)
+        {
+            string url = "/indexes/" + Uid + "/settings/ranking-rules";
+            string dataString = JsonSerializer.Serialize(rankingRules);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Empty the ranking-rules list
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> ResetRankingRules()
+        {
+            string url = "/indexes/" + Uid + "/settings/ranking-rules";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
     }
 }
