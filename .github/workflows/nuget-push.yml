@@ -2,7 +2,7 @@ name: nuget-push
 
 on:
   release:
-    branches: [ master ]
+    types: [ published ]
 
 jobs:
   build:
