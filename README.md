@@ -24,6 +24,7 @@
 
 - [🔧 Installation](#-installation)
 - [🚀 Getting started](#-getting-started)
+- [Dev workflow](#development-workflow)
 - [🤖 Compatibility with MeiliSearch](#-compatibility-with-meilisearch)
 
 ## 🔧 Installation
