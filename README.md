@@ -81,9 +81,8 @@ If you want to contribute, this sections describes the steps to follow.
 ```bash
 # Tests
 docker run -d -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics
+dotnet restore
 dotnet test
-# Build the project
-dotnet build
 ```
 
 ### Release
