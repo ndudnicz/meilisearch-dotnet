@@ -11,14 +11,12 @@ namespace MeilisearchDotnet
 {
     public class Index : MeiliHttpClientWrapper
     {
-
         public string Uid { get; set; }
 
         public Index(
-            string host,
-            string apiKey,
+            HttpClient httpClient,
             string IndexUid
-        ) : base(host, apiKey)
+        ) : base(httpClient)
         {
             Uid = IndexUid;
         }
@@ -96,28 +94,6 @@ namespace MeilisearchDotnet
             return await Get<MeilisearchDotnet.Types.IndexResponse>(url);
         }
 
-        /// <summary>
-        /// Update an index
-        /// </summary>
-        public async Task<MeilisearchDotnet.Types.IndexResponse> UpdateIndex(MeilisearchDotnet.Types.UpdateIndexRequest data)
-        {
-            string url = "/indexes/" + Uid;
-            string dataString = JsonSerializer.Serialize(data);
-            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-            return await Put<MeilisearchDotnet.Types.IndexResponse>(url, payload);
-        }
-
-        /// <summary>
-        /// Delete an index.
-        /// </summary>
-        public async Task<string> DeleteIndex()
-        {
-            string url = "/indexes/" + Uid;
-
-            return await Delete<string>(url);
-        }
-
         ///
         /// STATS
         ///
@@ -139,25 +115,6 @@ namespace MeilisearchDotnet
         /// <summary>
         /// Add or replace multiples documents to an index
         /// </summary>
-        /* Example :
-        Meilisearch ms = new Meilisearch("http://localhost:7700", "keykeykey");
-        MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
-            uid = "zz",
-            primaryKey = "key1"
-        });
-
-        MeilisearchDotnet.Types.EnqueuedUpdate ret = await index.AddDocuments<Doc>(new List<Doc>() {
-            new Doc { key1 = 222, value = "aaa" },
-            new Doc { key1 = 333, value = "bbb" }
-        });
-
-        ret = await index.AddDocuments<Doc>(new List<Doc>() {
-            new Doc { key1 = 444, value = "aaa" },
-            new Doc { key1 = 555, value = "bbb" }
-        }, new MeilisearchDotnet.Types.AddDocumentParams {
-            primaryKey = "key1"
-        });
-         */
         public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> AddDocuments<T>(
             IEnumerable<T> documents,
             MeilisearchDotnet.Types.AddDocumentParams options = null
@@ -182,12 +139,6 @@ namespace MeilisearchDotnet
         /// <summary>
         /// Add or update multiples documents to an index
         /// </summary>
-        /* Example :
-        await index.UpdateDocuments(new List<Doc>() {
-            new Doc { key1 = 222, value = "toto" },
-            new Doc { key1 = 444, value = "tutu" }
-        });
-        */
         public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateDocuments<T>(
             IEnumerable<T> documents,
             MeilisearchDotnet.Types.AddDocumentParams options = null

@@ -13,28 +13,65 @@ namespace MeilisearchDotnet
         public string Host;
         public string ApiKey;
 
+        // Avoid useless api calls by storing indexes we already know
+        public Dictionary<string, MeilisearchDotnet.Index> Indexes { get; set; }
+
         public Meilisearch(string host, string apiKey) : base(host, apiKey)
         {
             Host = host;
             ApiKey = apiKey;
+            Indexes = new Dictionary<string, MeilisearchDotnet.Index>();
+        }
+
+        ~Meilisearch()
+        {
+            Indexes = null;
+            HttpClient.Dispose();
         }
 
         /// <summary>
         /// Return an Index instance
         /// </summary>
-        public Index GetIndex(string indexUid)
+        public async Task<MeilisearchDotnet.Index> GetIndex(string indexUid)
         {
-            return new Index(Host, ApiKey, indexUid);
+            if (Indexes.TryGetValue(indexUid, out MeilisearchDotnet.Index index))
+            {
+                return index;
+            }
+            else
+            {
+                string url = "/indexes/" + indexUid;
+                MeilisearchDotnet.Types.IndexResponse indexResponses = await Get<MeilisearchDotnet.Types.IndexResponse>(url);
+
+                index = new Index(HttpClient, indexUid);
+                Indexes.Add(indexUid, index);
+                return index;
+            }
         }
 
         /// <summary>
-        /// List all indexes in the database
+        /// List all indexes in the database and refresh Indexes Dictionary
         /// </summary>
         public async Task<IEnumerable<MeilisearchDotnet.Types.IndexResponse>> ListIndexes()
         {
             string url = "/indexes";
+            IEnumerable<MeilisearchDotnet.Types.IndexResponse> indexResponses = await Get<IEnumerable<MeilisearchDotnet.Types.IndexResponse>>(url);
+            Dictionary<string, MeilisearchDotnet.Index> newIndexes = new Dictionary<string, MeilisearchDotnet.Index>();
 
-            return await Get<IEnumerable<MeilisearchDotnet.Types.IndexResponse>>(url);
+            foreach (MeilisearchDotnet.Types.IndexResponse indexResponse in indexResponses)
+            {
+                if (Indexes.TryGetValue(indexResponse.Uid, out MeilisearchDotnet.Index index))
+                {
+                    newIndexes.Add(indexResponse.Uid, index);
+                }
+                else
+                {
+                    index = new Index(HttpClient, indexResponse.Uid);
+                    newIndexes.Add(indexResponse.Uid, index);
+                }
+                Indexes = newIndexes;
+            }
+            return indexResponses;
         }
 
         /// <summary>
@@ -45,10 +82,34 @@ namespace MeilisearchDotnet
             string url = "/indexes";
             string dataString = JsonSerializer.Serialize(data);
             StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/json");
+            MeilisearchDotnet.Types.IndexResponse indexResponse = await Post<MeilisearchDotnet.Types.IndexResponse>(url, payload);
+            MeilisearchDotnet.Index index = new Index(HttpClient, indexResponse.Uid);
 
-            MeilisearchDotnet.Types.IndexResponse index = await Post<MeilisearchDotnet.Types.IndexResponse>(url, payload);
+            Indexes.Add(index.Uid, index);
+            return index;
+        }
 
-            return GetIndex(index.Uid);
+        /// <summary>
+        /// Update an index
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.IndexResponse> UpdateIndex(string indexUid, MeilisearchDotnet.Types.UpdateIndexRequest data)
+        {
+            string url = "/indexes/" + indexUid;
+            string dataString = JsonSerializer.Serialize(data);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Put<MeilisearchDotnet.Types.IndexResponse>(url, payload);
+        }
+
+        /// <summary>
+        /// Delete an index.
+        /// </summary>
+        public async Task<string> DeleteIndex(string indexUid)
+        {
+            string url = "/indexes/" + indexUid;
+
+            Indexes.Remove(indexUid);
+            return await Delete<string>(url);
         }
 
         ///

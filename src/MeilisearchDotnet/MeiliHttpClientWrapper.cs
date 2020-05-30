@@ -1,93 +1,185 @@
 using System;
+using System.Text.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 using MeilisearchDotnet.Exceptions;
 
 namespace MeilisearchDotnet
 {
-    public class MeiliHttpClientWrapper {
-        protected HttpClient httpClient { get; set; }
-        protected MeiliHttpClientWrapper(string host, string apiKey) {
-            httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(host);
-            if (apiKey != null) {
-                httpClient.DefaultRequestHeaders.Add("X-Meili-API-Key", apiKey);
+    public class MeiliHttpClientWrapper
+    {
+        protected HttpClient HttpClient { get; set; }
+        protected MeiliHttpClientWrapper(string host, string apiKey)
+        {
+            HttpClient = new HttpClient();
+            HttpClient.BaseAddress = new Uri(host);
+            if (apiKey != null)
+            {
+                HttpClient.DefaultRequestHeaders.Add("X-Meili-API-Key", apiKey);
             }
         }
 
-        protected async Task<T> Get<T>(string url) {
-            try {
-                HttpResponseMessage res = await httpClient.GetAsync(url);
-                if (res.IsSuccessStatusCode) {
+        protected MeiliHttpClientWrapper(HttpClient httpclient)
+        {
+            HttpClient = httpclient;
+        }
+
+        protected async Task<T> Get<T>(string url)
+        {
+            try
+            {
+                HttpResponseMessage res = await HttpClient.GetAsync(url);
+                if (res.IsSuccessStatusCode)
+                {
                     return await res.Content.ReadAsAsync<T>();
-                } else {
-                    throw new MeilisearchApiException(await res.Content.ReadAsStringAsync());
                 }
-            } catch (Exception e) {
+                else
+                {
+                    if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                    }
+                    else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                    }
+                    else
+                    {
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new MeilisearchApiException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
                 throw new MeilisearchApiException(e.Message, e);
             }
         }
 
-        protected async Task<T> Post<T>(string url, StringContent payload) {
-            try {
-                HttpResponseMessage res = await httpClient.PostAsync(url, payload);
-                if (res.IsSuccessStatusCode) {
+        protected async Task<T> Post<T>(string url, StringContent payload)
+        {
+            try
+            {
+                HttpResponseMessage res = await HttpClient.PostAsync(url, payload);
+                if (res.IsSuccessStatusCode)
+                {
                     return await res.Content.ReadAsAsync<T>();
-                } else {
-                    throw new MeilisearchApiException(await res.Content.ReadAsStringAsync());
                 }
-            } catch (Exception e) {
+                else
+                {
+                    if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                    }
+                    else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                    }
+                    else
+                    {
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new MeilisearchApiException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
                 throw new MeilisearchApiException(e.Message, e);
             }
         }
 
-        // public async Task<T> PostJson<T, O>(string url, O payload) {
-        //     try
-        //     {
-        //         HttpResponseMessage res = await httpClient.PostAsync(url, payload.ToString());
-        //         return await res.Content.ReadAsAsync<T>();
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         throw new MeilisearchApiException(e.Message, e);
-        //     }
-        // }
-
-        protected async Task<T> Put<T>(string url, StringContent payload) {
-            try {
-                HttpResponseMessage res = await httpClient.PutAsync(url, payload);
-                 if (res.IsSuccessStatusCode) {
+        protected async Task<T> Put<T>(string url, StringContent payload)
+        {
+            try
+            {
+                HttpResponseMessage res = await HttpClient.PutAsync(url, payload);
+                if (res.IsSuccessStatusCode)
+                {
                     return await res.Content.ReadAsAsync<T>();
-                } else {
-                    throw new MeilisearchApiException(await res.Content.ReadAsStringAsync());
                 }
-            } catch (Exception e) {
+                else
+                {
+                    if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                    }
+                    else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                    }
+                    else
+                    {
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new MeilisearchApiException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
                 throw new MeilisearchApiException(e.Message, e);
             }
         }
 
-        protected async Task<T> Delete<T>(string url) {
-            try {
-                HttpResponseMessage res = await httpClient.DeleteAsync(url);
-                if (res.IsSuccessStatusCode) {
+        protected async Task<T> Delete<T>(string url)
+        {
+            try
+            {
+                HttpResponseMessage res = await HttpClient.DeleteAsync(url);
+                if (res.IsSuccessStatusCode)
+                {
                     return await res.Content.ReadAsAsync<T>();
-                } else {
-                    throw new MeilisearchApiException(await res.Content.ReadAsStringAsync());
                 }
-            } catch (Exception e) {
+                else
+                {
+                    if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                    }
+                    else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                    }
+                    else
+                    {
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new MeilisearchApiException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
                 throw new MeilisearchApiException(e.Message, e);
             }
         }
 
-        protected async Task<T> Send<T>(HttpRequestMessage req) {
-            try {
-                HttpResponseMessage res = await httpClient.SendAsync(req);
-                if (res.IsSuccessStatusCode) {
+        protected async Task<T> Send<T>(HttpRequestMessage req)
+        {
+            try
+            {
+                HttpResponseMessage res = await HttpClient.SendAsync(req);
+                if (res.IsSuccessStatusCode)
+                {
                     return await res.Content.ReadAsAsync<T>();
-                } else {
-                    throw new MeilisearchApiException(await res.Content.ReadAsStringAsync());
                 }
-            } catch (Exception e) {
+                else
+                {
+                    if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                    }
+                    else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                    }
+                    else
+                    {
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new MeilisearchApiException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
                 throw new MeilisearchApiException(e.Message, e);
             }
         }
