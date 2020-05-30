@@ -52,7 +52,7 @@ namespace MeilisearchDotnet
             }
             catch (Exception e)
             {
-                throw new MeilisearchApiException(e.Message, e);
+                throw e;
             }
         }
 
@@ -84,7 +84,7 @@ namespace MeilisearchDotnet
             }
             catch (Exception e)
             {
-                throw new MeilisearchApiException(e.Message, e);
+                throw e;
             }
         }
 
@@ -116,7 +116,7 @@ namespace MeilisearchDotnet
             }
             catch (Exception e)
             {
-                throw new MeilisearchApiException(e.Message, e);
+                throw e;
             }
         }
 
@@ -148,7 +148,7 @@ namespace MeilisearchDotnet
             }
             catch (Exception e)
             {
-                throw new MeilisearchApiException(e.Message, e);
+                throw e;
             }
         }
 
@@ -180,7 +180,7 @@ namespace MeilisearchDotnet
             }
             catch (Exception e)
             {
-                throw new MeilisearchApiException(e.Message, e);
+                throw e;
             }
         }
     }

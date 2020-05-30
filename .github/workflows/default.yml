@@ -25,3 +25,5 @@ jobs:
       run: chmod +x run-meili.sh && ./run-meili.sh
     - name: Test
       run: cd src/Tests && dotnet test --no-restore --verbosity normal
+    - name: Cleanup
+      run: docker rm -f coucou
