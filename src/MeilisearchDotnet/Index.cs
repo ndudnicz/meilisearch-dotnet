@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Net.Http;
@@ -239,6 +240,11 @@ namespace MeilisearchDotnet
             return await Get<T>(url);
         }
 
+        public async Task<T> GetDocument<T>(int documentId)
+        {
+            return await GetDocument<T>(documentId.ToString());
+        }
+
         /// <summary>
         /// Delete one document
         /// </summary>
@@ -247,6 +253,11 @@ namespace MeilisearchDotnet
             string url = "/indexes/" + Uid + "/documents/" + documentId;
 
             return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> DeleteDocument(int documentId)
+        {
+            return await DeleteDocument(documentId.ToString());
         }
 
         /// <summary>
@@ -259,6 +270,11 @@ namespace MeilisearchDotnet
             StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
 
             return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> DeleteDocuments(IEnumerable<int> documentsIds)
+        {
+            return await DeleteDocuments(documentsIds.Select(x => x.ToString()));
         }
 
         /// <summary>
