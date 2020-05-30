@@ -48,26 +48,63 @@ NB: you can also download MeiliSearch from **Homebrew** or **APT**.
 
 ## 🎬 Getting started
 
-Here is a quickstart for a search request
+Here is a quickstart how to add / update documents
 
 ```cs
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using MeilisearchDotnet;
-using MeilisearchDotnet.Types;
 
 namespace console
 {
+    public class Doc
+    {
+        public int key1 { get; set; }
+        public string value { get; set; }
+    }
     class Program
     {
         static async Task Main(string[] args)
         {
             Meilisearch ms = new Meilisearch("http://localhost:7700", "masterKey");
-            SysInfo p = await ms.SysInfo();
-            await ms.ChangeHealthTo(false);
-            bool k = await ms.IsHealthy();
-            Console.WriteLine(k);
+            MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            {
+                uid = "kero",
+                primaryKey = "key1"
+            });
+
+            MeilisearchDotnet.Types.EnqueuedUpdate ret = await index.AddDocuments<Doc>(new List<Doc>() {
+                new Doc { key1 = 222, value = "aaa" },
+                new Doc { key1 = 333, value = "bbb" }
+            });
+
+            await index.WaitForPendingUpdate(ret.UpdateId);
+
+            Doc doc = await index.GetDocument<Doc>("222");
+
+            // doc => { key1 = 222, value = "aaa" }
+
+            ret = await index.AddDocuments<Doc>(new List<Doc>() {
+                new Doc { key1 = 444, value = "aaa" },
+                new Doc { key1 = 555, value = "bbb" }
+            }, new MeilisearchDotnet.Types.AddDocumentParams
+            {
+                primaryKey = "key1"
+            });
+
+            await index.WaitForPendingUpdate(ret.UpdateId);
+
+            ret = await index.UpdateDocuments(new List<Doc>() {
+                new Doc { key1 = 222, value = "tpayet" },
+                new Doc { key1 = 444, value = "tutu" }
+            });
+
+            await index.WaitForPendingUpdate(ret.UpdateId);
+
+            doc = await index.GetDocument<Doc>("222");
+
+            // doc => { key1 = 222, value = "tpayet" }
         }
     }
 }

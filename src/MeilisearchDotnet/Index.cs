@@ -44,7 +44,7 @@ namespace MeilisearchDotnet
             {
                 MeilisearchDotnet.Types.Update res = await GetUpdateStatus(updateId);
 
-                if (res.Status == "enqueued")
+                if (res.Status != "enqueued")
                 {
                     return res;
                 }
@@ -142,19 +142,19 @@ namespace MeilisearchDotnet
         Meilisearch ms = new Meilisearch("http://localhost:7700", "keykeykey");
         MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
             uid = "zz",
-            primaryKey = "toto"
+            primaryKey = "key1"
         });
 
         MeilisearchDotnet.Types.EnqueuedUpdate ret = await index.AddDocuments<Doc>(new List<Doc>() {
-            new Doc { Key1 = 222 },
-            new Doc { Key1 = 222 }
+            new Doc { key1 = 222, value = "aaa" },
+            new Doc { key1 = 333, value = "bbb" }
         });
 
         ret = await index.AddDocuments<Doc>(new List<Doc>() {
-            new Doc { Key1 = 222 },
-            new Doc { Key1 = 222 }
+            new Doc { key1 = 444, value = "aaa" },
+            new Doc { key1 = 555, value = "bbb" }
         }, new MeilisearchDotnet.Types.AddDocumentParams {
-            primaryKey = "toto"
+            primaryKey = "key1"
         });
          */
         public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> AddDocuments<T>(
@@ -183,8 +183,8 @@ namespace MeilisearchDotnet
         /// </summary>
         /* Example :
         await index.UpdateDocuments(new List<Doc>() {
-            new Doc { id = 222, value = 1 },
-            new Doc { id = 333, value = 1 }
+            new Doc { key1 = 222, value = "toto" },
+            new Doc { key1 = 444, value = "tutu" }
         });
         */
         public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateDocuments<T>(
