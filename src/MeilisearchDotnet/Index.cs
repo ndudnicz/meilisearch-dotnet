@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -77,7 +78,19 @@ namespace MeilisearchDotnet
         )
         {
             // TODO
-            throw new NotImplementedException();
+            string url = null;
+
+            if (options != null)
+            {
+                url = "/indexes/" + Uid + "/search?q=" + query + "&" + WebUtility.UrlEncode(options.ToQueryString());
+            }
+            else
+            {
+                url = "/indexes/" + Uid + "/search?q=" + query;
+            }
+
+
+            return await Get<MeilisearchDotnet.Types.SearchResponse<T>>(url);
         }
 
         ///
@@ -124,7 +137,7 @@ namespace MeilisearchDotnet
 
             if (options != null)
             {
-                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
+                url = "/indexes/" + Uid + "/documents?" + WebUtility.UrlEncode(options.ToQueryString());
             }
             else
             {
@@ -148,7 +161,7 @@ namespace MeilisearchDotnet
 
             if (options != null)
             {
-                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
+                url = "/indexes/" + Uid + "/documents?" + WebUtility.UrlEncode(options.ToQueryString());
             }
             else
             {
@@ -172,7 +185,7 @@ namespace MeilisearchDotnet
 
             if (options != null)
             {
-                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
+            url = "/indexes/" + Uid + "/documents?" + WebUtility.UrlEncode(options.ToQueryString());
             }
             else
             {

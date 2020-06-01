@@ -3,13 +3,46 @@ using System.Collections.Generic;
 using Xunit;
 using MeilisearchDotnet;
 
-namespace Tests
+namespace MeilisearchTests
 {
-    public class MeilisearchTest
+    [Collection("Sequential")]
+    public class GetListTests
     {
-        Meilisearch ms;
+        Meilisearch ms { get; set; }
 
-        public MeilisearchTest()
+        public GetListTests()
+        {
+            ms = new Meilisearch("http://localhost:7700", "masterKey");
+        }
+
+        [Fact]
+        public async void GetIndexesList()
+        {
+            int n = 3;
+            int i = 0;
+            for (; i < n; i++)
+            {
+                MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest { uid = i.ToString() });
+                Assert.NotNull(index);
+                Assert.Equal(index.Uid, i.ToString());
+            }
+            IEnumerable<MeilisearchDotnet.Types.IndexResponse> responses = await ms.ListIndexes();
+            Assert.Equal(n, ms.Indexes.Keys.Count());
+            Assert.Equal(n, responses.Count());
+            i = 0;
+            for (; i < n; i++)
+            {
+                await ms.DeleteIndex(i.ToString());
+            }
+        }
+    }
+
+    [Collection("Sequential")]
+    public class GlobalTests
+    {
+        Meilisearch ms { get; set; }
+
+        public GlobalTests()
         {
             ms = new Meilisearch("http://localhost:7700", "masterKey");
         }
@@ -29,7 +62,8 @@ namespace Tests
         [Fact]
         public async void CreateIndex_UidNull()
         {
-            await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.BadRequestException>(async () => await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
+            await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.BadRequestException>(async () => await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            {
                 uid = null
             }));
         }
@@ -38,52 +72,46 @@ namespace Tests
         public async void CreateIndex()
         {
             string uid = "kero";
-            MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
+            MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            {
                 uid = uid
             });
-            Assert.Equal(index.Uid, uid);
-            await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.BadRequestException>(async () => await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {
-                uid = "kero"
+            Assert.Equal(uid, index.Uid);
+            await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.BadRequestException>(async () => await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            {
+                uid = uid
             }));
+            await ms.DeleteIndex(uid);
         }
 
         [Fact]
         public async void DeleteIndex()
         {
             string uid = "orek";
-            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {uid = uid});
+            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest { uid = uid });
             await ms.DeleteIndex(uid);
-            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {uid = uid});
+            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest { uid = uid });
             await ms.DeleteIndex(uid);
             await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.NotFoundException>(async () => await ms.GetIndex(uid));
-        }
-
-        [Fact]
-        public async void GetIndexesList()
-        {
-            int i = 1;
-            for (; i < 42; i++)
-            {
-                await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {uid = i.ToString()});
-            }
-            IEnumerable<MeilisearchDotnet.Types.IndexResponse> responses = await ms.ListIndexes();
-            Assert.Equal(responses.Count(), 42);
-            Assert.Equal(ms.Indexes.Keys.Count(), 42);
-            i = 1;
-            for (; i < 42; i++)
-            {
-                await ms.DeleteIndex(i.ToString());
-            }
         }
 
         [Fact]
         public async void UpdateIndex()
         {
             string uid = "orek";
-            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {uid = uid});
-            await ms.UpdateIndex(uid, new MeilisearchDotnet.Types.UpdateIndexRequest {
-                primaryKey = "key1"
+            string primaryKey = "key1";
+            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest { uid = uid });
+            MeilisearchDotnet.Types.IndexResponse res = await ms.UpdateIndex(uid, new MeilisearchDotnet.Types.UpdateIndexRequest
+            {
+                primaryKey = primaryKey
             });
+            Assert.Equal(primaryKey, res.PrimaryKey);
+            Assert.Equal(uid, res.Name);
+            Assert.Equal(uid, res.Uid);
+            await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.BadRequestException>(async () => await ms.UpdateIndex(uid, new MeilisearchDotnet.Types.UpdateIndexRequest
+            {
+                primaryKey = primaryKey
+            }));
             await ms.DeleteIndex(uid);
         }
 
@@ -91,11 +119,37 @@ namespace Tests
         public async void UpdateIndex_IndexAlreadyHasAPrimaryKey()
         {
             string uid = "orek";
-            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest {uid = uid, primaryKey = "aaa"});
-            await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.BadRequestException>(async () => await ms.UpdateIndex(uid, new MeilisearchDotnet.Types.UpdateIndexRequest {
+            await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest { uid = uid, primaryKey = "aaa" });
+            await Assert.ThrowsAsync<MeilisearchDotnet.Exceptions.BadRequestException>(async () => await ms.UpdateIndex(uid, new MeilisearchDotnet.Types.UpdateIndexRequest
+            {
                 primaryKey = "key1"
             }));
             await ms.DeleteIndex(uid);
+        }
+
+        [Fact]
+        public async void GetKeys()
+        {
+            MeilisearchDotnet.Types.Keys keys = await ms.GetKeys();
+            Assert.NotNull(keys.Private);
+            Assert.NotNull(keys.Public);
+        }
+
+        [Fact]
+        public async void Healthyness()
+        {
+            await ms.ChangeHealthTo(true);
+            bool health = await ms.IsHealthy();
+            Assert.True(health);
+            await ms.SetUnhealthy();
+            health = await ms.IsHealthy();
+            Assert.False(health);
+            await ms.SetHealthy();
+            health = await ms.IsHealthy();
+            Assert.True(health);
+            await ms.ChangeHealthTo(false);
+            health = await ms.IsHealthy();
+            Assert.False(health);
         }
 
     }

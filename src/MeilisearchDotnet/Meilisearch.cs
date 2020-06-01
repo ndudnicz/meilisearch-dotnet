@@ -16,7 +16,7 @@ namespace MeilisearchDotnet
         // Avoid useless api calls by storing indexes we already know
         public Dictionary<string, MeilisearchDotnet.Index> Indexes { get; set; }
 
-        // TODO: add StringBuilderObject
+        // TODO: add StringBuilder object ??
 
         public Meilisearch(string host, string apiKey) : base(host, apiKey)
         {
@@ -172,7 +172,7 @@ namespace MeilisearchDotnet
         /// <summary>
         /// Change the healthyness to unhealthy
         /// </summary>
-        public Task<string> SetUnhealthy(bool health)
+        public Task<string> SetUnhealthy()
         {
             return ChangeHealthTo(false);
         }
