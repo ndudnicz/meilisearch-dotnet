@@ -16,8 +16,6 @@ namespace MeilisearchDotnet
         // Avoid useless api calls by storing indexes we already know
         public Dictionary<string, MeilisearchDotnet.Index> Indexes { get; set; }
 
-        // TODO: add StringBuilder object ??
-
         public Meilisearch(string host, string apiKey) : base(host, apiKey)
         {
             Host = host;

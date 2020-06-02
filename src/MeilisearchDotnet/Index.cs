@@ -77,7 +77,6 @@ namespace MeilisearchDotnet
             MeilisearchDotnet.Types.SearchRequest options = null
         )
         {
-            // TODO
             string url = null;
 
             if (options != null)
@@ -88,9 +87,18 @@ namespace MeilisearchDotnet
             {
                 url = "/indexes/" + Uid + "/search?q=" + query;
             }
-
-
             return await Get<MeilisearchDotnet.Types.SearchResponse<T>>(url);
+        }
+
+        /// <summary>
+        /// Find documents into an index
+        /// <summary>
+        public async Task<MeilisearchDotnet.Types.SearchResponse<T>> Find<T>(
+            string query,
+            MeilisearchDotnet.Types.SearchRequest options = null
+        )
+        {
+            return await Search<T>(query, options);
         }
 
         ///
@@ -172,7 +180,6 @@ namespace MeilisearchDotnet
 
             return await Put<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
         }
-
 
         /// <summary>
         /// Get documents of an index
@@ -412,7 +419,7 @@ namespace MeilisearchDotnet
         /// <summary>
         /// Update the distinct-attribute
         /// </summary>
-        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> updateDistinctAttribute(string distinctAttribute)
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateDistinctAttribute(string distinctAttribute)
         {
             string url = "/indexes/" + Uid + "/settings/distinct-attribute";
             string dataString = JsonSerializer.Serialize(distinctAttribute);
@@ -429,6 +436,104 @@ namespace MeilisearchDotnet
             string url = "/indexes/" + Uid + "/settings/distinct-attribute";
 
             return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        ///
+        /// SEARCHABLE ATTRIBUTE
+        ///
+
+        /// <summary>
+        /// Get the searchable-attributess
+        /// </summary>
+        public async Task<IEnumerable<string>> GetSearchableAttributes()
+        {
+            string url = "/indexes/" + Uid + "/settings/searchable-attributes";
+
+            return await Get<IEnumerable<string>>(url);
+        }
+
+        /// <summary>
+        /// Update the searchable-attributes
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateSearchableAttributes(IEnumerable<string> searchableAttributes)
+        {
+            string url = "/indexes/" + Uid + "/settings/searchable-attributes";
+            string dataString = JsonSerializer.Serialize(searchableAttributes);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Reset the searchable-attributes
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> ResetSearchableAttributes()
+        {
+            string url = "/indexes/" + Uid + "/settings/searchable-attributes";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        ///
+        /// DISPLAYED ATTRIBUTE
+        ///
+
+        /// <summary>
+        /// Get the displayed-attributess
+        /// </summary>
+        public async Task<IEnumerable<string>> GetDisplayedAttributes()
+        {
+            string url = "/indexes/" + Uid + "/settings/displayed-attributes";
+
+            return await Get<IEnumerable<string>>(url);
+        }
+
+        /// <summary>
+        /// Update the displayed-attributes
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateDisplayedAttributes(IEnumerable<string> displayedAttributes)
+        {
+            string url = "/indexes/" + Uid + "/settings/displayed-attributes";
+            string dataString = JsonSerializer.Serialize(displayedAttributes);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Reset the displayed-attributes
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> ResetDisplayedAttributes()
+        {
+            string url = "/indexes/" + Uid + "/settings/displayed-attributes";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
+
+        ///
+        /// ACCEPT NEW FIELDS
+        ///
+
+        /// <summary>
+        /// Get the displayed-attributess
+        /// </summary>
+        public async Task<bool> GetAcceptNewFields()
+        {
+            string url = "/indexes/" + Uid + "/settings/accept-new-fields";
+
+            return await Get<bool>(url);
+        }
+
+        /// <summary>
+        /// Update the displayed-attributes
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateDisplayedAttributes(bool acceptNewFields)
+        {
+            string url = "/indexes/" + Uid + "/settings/accept-new-fields";
+            string dataString = JsonSerializer.Serialize(acceptNewFields);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
         }
     }
 }

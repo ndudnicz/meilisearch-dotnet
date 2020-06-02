@@ -30,7 +30,7 @@
 ## 🔧 Installation
 It's available as NuGet package :
 ```bash
-dotnet add package MeilisearchDotnet --version 0.0.2-a
+dotnet add package MeilisearchDotnet --version 0.0.3-a
 ```
 [https://www.nuget.org/packages/MeilisearchDotnet](https://www.nuget.org/packages/MeilisearchDotnet)
 
@@ -108,6 +108,20 @@ namespace console
         }
     }
 }
+```
+
+#### Search in index
+
+```csharp
+// MeiliSearch is typo-tolerant:
+MeilisearchDotnet.Types.SearchResponse<Doc> result = await index.Search<Doc>("tpyaet");
+// result => {
+//   "Hits": [{"key1": 222,"value": "tpayet"}],
+//   "Offset": 0,
+//   "Limit": 20,
+//   "ProcessingTimeMs": 1,
+//   "Query": "tpyaet"
+// }
 ```
 
 ## ⚙️ Development Workflow
