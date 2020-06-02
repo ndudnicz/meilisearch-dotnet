@@ -302,7 +302,7 @@ namespace MeilisearchDotnet
         }
 
         /// <summary>
-        /// Update the list of synonyms. Overwrite the old list.
+        /// Update the list of synonyms. Overwrite the old list
         /// </summary>
         public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateSynonyms(Dictionary<string, IEnumerable<string>> synonyms)
         {
@@ -338,7 +338,7 @@ namespace MeilisearchDotnet
         }
 
         /// <summary>
-        /// Update the list of stop-words. Overwrite the old list.
+        /// Update the list of stop-words. Overwrite the old list
         /// </summary>
         public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateStopWords(IEnumerable<string> stopWords)
         {
@@ -374,7 +374,7 @@ namespace MeilisearchDotnet
         }
 
         /// <summary>
-        /// Update the list of ranking-rules. Overwrite the old list.
+        /// Update the list of ranking-rules. Overwrite the old list
         /// </summary>
         public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> UpdateRankingRules(IEnumerable<string> rankingRules)
         {
@@ -395,5 +395,40 @@ namespace MeilisearchDotnet
             return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
         }
 
+        ///
+        /// DISTINCT ATTRIBUTE
+        ///
+
+        /// <summary>
+        /// Get the distinct-attributes
+        /// </summary>
+        public async Task<string> GetDistinctAttribute()
+        {
+            string url = "/indexes/" + Uid + "/settings/distinct-attribute";
+
+            return await Get<string>(url);
+        }
+
+        /// <summary>
+        /// Update the distinct-attribute
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> updateDistinctAttribute(string distinctAttribute)
+        {
+            string url = "/indexes/" + Uid + "/settings/distinct-attribute";
+            string dataString = JsonSerializer.Serialize(distinctAttribute);
+            StringContent payload = new StringContent(dataString, Encoding.UTF8, "application/x-www-form-urlencoded");
+
+            return await Post<MeilisearchDotnet.Types.EnqueuedUpdate>(url, payload);
+        }
+
+        /// <summary>
+        /// Reset the distinct-attribute
+        /// </summary>
+        public async Task<MeilisearchDotnet.Types.EnqueuedUpdate> ResetDistinctAttribute()
+        {
+            string url = "/indexes/" + Uid + "/settings/distinct-attribute";
+
+            return await Delete<MeilisearchDotnet.Types.EnqueuedUpdate>(url);
+        }
     }
 }
