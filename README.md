@@ -110,6 +110,20 @@ namespace console
 }
 ```
 
+#### Search in index
+
+```csharp
+// MeiliSearch is typo-tolerant:
+MeilisearchDotnet.Types.SearchResponse<Doc> result = await index.Search<Doc>("tpyaet");
+// result => {
+//   "Hits": [{"key1": 222,"value": "tpayet"}],
+//   "Offset": 0,
+//   "Limit": 20,
+//   "ProcessingTimeMs": 1,
+//   "Query": "tpyaet"
+// }
+```
+
 ## ⚙️ Development Workflow
 
 If you want to contribute, this sections describes the steps to follow.
