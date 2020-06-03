@@ -30,7 +30,7 @@
 ## 🔧 Installation
 It's available as NuGet package :
 ```bash
-dotnet add package MeilisearchDotnet --version 0.0.4
+dotnet add package MeilisearchDotnet --version 0.0.5
 ```
 [https://www.nuget.org/packages/MeilisearchDotnet](https://www.nuget.org/packages/MeilisearchDotnet)
 
@@ -149,4 +149,4 @@ You must do a PR modifying the file `meilisearch-dotnet.csproj` with the right v
 
 ## 🤖 Compatibility with MeiliSearch
 
-This package works for MeiliSearch `>=0.10.x`.
+This package works for MeiliSearch >=0.10.x
