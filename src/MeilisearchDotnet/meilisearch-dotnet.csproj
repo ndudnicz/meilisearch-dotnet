@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>meilisearch-dotnet</RootNamespace>
     <PackageId>MeilisearchDotnet</PackageId>
-    <Version>0.0.3-a</Version>
+    <Version>0.0.4</Version>
     <Authors>ndudnicz</Authors>
     <Description>
     WIP MeiliSearchDotnet is a client for MeiliSearch written in .NET standard 2.0. MeiliSearch is a powerful, fast, open-source, easy to use and deploy search engine. Both searching and indexing are highly customizable. Features such as typo-tolerance, filters, and synonyms are provided out-of-the-box.
