@@ -36,11 +36,15 @@ namespace MeilisearchDotnet
                 {
                     if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new NotFoundException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
-                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new BadRequestException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else
                     {
@@ -68,11 +72,15 @@ namespace MeilisearchDotnet
                 {
                     if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new NotFoundException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
-                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new BadRequestException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else
                     {
@@ -100,11 +108,15 @@ namespace MeilisearchDotnet
                 {
                     if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new NotFoundException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
-                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new BadRequestException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else
                     {
@@ -132,11 +144,15 @@ namespace MeilisearchDotnet
                 {
                     if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new NotFoundException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
-                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new BadRequestException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else
                     {
@@ -164,11 +180,15 @@ namespace MeilisearchDotnet
                 {
                     if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        throw new MeilisearchDotnet.Exceptions.NotFoundException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new NotFoundException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else if (res.StatusCode == System.Net.HttpStatusCode.BadRequest)
                     {
-                        throw new MeilisearchDotnet.Exceptions.BadRequestException();
+                        string content = await res.Content.ReadAsStringAsync();
+                        throw new BadRequestException(content != null && content.Length > 0 ? content : res.StatusCode.ToString());
+
                     }
                     else
                     {

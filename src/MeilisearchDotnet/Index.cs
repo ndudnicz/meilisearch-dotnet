@@ -78,10 +78,11 @@ namespace MeilisearchDotnet
         )
         {
             string url = null;
+            query = WebUtility.UrlEncode(query);
 
             if (options != null)
             {
-                url = "/indexes/" + Uid + "/search?q=" + query + "&" + WebUtility.UrlEncode(options.ToQueryString());
+                url = "/indexes/" + Uid + "/search?q=" + query + "&" + options.ToQueryString();
             }
             else
             {
@@ -145,7 +146,7 @@ namespace MeilisearchDotnet
 
             if (options != null)
             {
-                url = "/indexes/" + Uid + "/documents?" + WebUtility.UrlEncode(options.ToQueryString());
+                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
             }
             else
             {
@@ -169,7 +170,7 @@ namespace MeilisearchDotnet
 
             if (options != null)
             {
-                url = "/indexes/" + Uid + "/documents?" + WebUtility.UrlEncode(options.ToQueryString());
+                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
             }
             else
             {
@@ -192,7 +193,7 @@ namespace MeilisearchDotnet
 
             if (options != null)
             {
-            url = "/indexes/" + Uid + "/documents?" + WebUtility.UrlEncode(options.ToQueryString());
+                url = "/indexes/" + Uid + "/documents?" + options.ToQueryString();
             }
             else
             {

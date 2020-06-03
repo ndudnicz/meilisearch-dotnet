@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Net;
 
 namespace MeilisearchDotnet.Types
 {
@@ -18,13 +19,13 @@ namespace MeilisearchDotnet.Types
         public string ToQueryString()
         {
             List<string> s = new List<string>() {
-                Offset.HasValue ? "offset=" + Offset.ToString() : null,
+                Offset.HasValue ? "offset=" +  Offset.ToString() : null,
                 Limit.HasValue ? "limit=" + Limit.ToString() : null,
-                AttributesToRetrieve != null ? "attributesToRetrieve=" + string.Join(",", AttributesToRetrieve.Where(x => !string.IsNullOrEmpty(x))) : null,
-                AttributesToCrop != null ? "attributesToCrop=" + string.Join(",", AttributesToCrop.Where(x => !string.IsNullOrEmpty(x))) : null,
+                AttributesToRetrieve != null ? "attributesToRetrieve=" + string.Join(",", AttributesToRetrieve.Where(x => !string.IsNullOrEmpty(x)).Select(x => WebUtility.UrlEncode(x))) : null,
+                AttributesToCrop != null ? "attributesToCrop=" + string.Join(",", AttributesToCrop.Where(x => !string.IsNullOrEmpty(x)).Select(x => WebUtility.UrlEncode(x))) : null,
                 CropLength.HasValue ? "cropLength=" + CropLength.ToString() : null,
-                AttributesToHighlight != null ? "attributesToHighlight=" + string.Join(",", AttributesToHighlight.Where(x => !string.IsNullOrEmpty(x))) : null,
-                Filters != null ? "filters=" + string.Join(",", Filters.Where(x => !string.IsNullOrEmpty(x))) : null,
+                AttributesToHighlight != null ? "attributesToHighlight=" + string.Join(",", AttributesToHighlight.Where(x => !string.IsNullOrEmpty(x)).Select(x => WebUtility.UrlEncode(x))) : null,
+                Filters != null ? "filters=" + string.Join(",", Filters.Where(x => !string.IsNullOrEmpty(x)).Select(x => WebUtility.UrlEncode(x))) : null,
                 Matches.HasValue ? "matches=" + Limit.ToString() : null
             };
             return string.Join("&", s.Where(x => !string.IsNullOrEmpty(x)));

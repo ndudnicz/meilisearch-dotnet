@@ -1,12 +1,16 @@
+using System.Net;
+using System.Text.Json.Serialization;
+
 namespace MeilisearchDotnet.Types
 {
     public class AddDocumentParams
     {
-        public string primaryKey { get; set; }
+        [JsonPropertyName("primaryKey")]
+        public string PrimaryKey { get; set; }
 
         public string ToQueryString()
         {
-            return "primaryKey=" + primaryKey;
+            return "primaryKey=" + WebUtility.UrlEncode(PrimaryKey);
         }
     }
 }

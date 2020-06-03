@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Net;
 
 namespace MeilisearchDotnet.Types
 {
@@ -14,7 +15,7 @@ namespace MeilisearchDotnet.Types
             List<string> s = new List<string>() {
                 Offset.HasValue ? "offset=" + Offset.ToString() : null,
                 Limit.HasValue ? "limit=" + Limit.ToString() : null,
-                AttributesToRetrieve != null ? "attributesToRetrieve=" + string.Join(",", AttributesToRetrieve.Where(x => !string.IsNullOrEmpty(x))) : null
+                AttributesToRetrieve != null ? "attributesToRetrieve=" + string.Join(",", AttributesToRetrieve.Where(x => !string.IsNullOrEmpty(x)).Select(x => WebUtility.UrlEncode(x))) : null
             };
             return string.Join("&", s.Where(x => !string.IsNullOrEmpty(x)));
         }

@@ -1,8 +1,12 @@
+using System.Text.Json.Serialization;
+
 namespace MeilisearchDotnet.Types
 {
     public struct IndexRequest
     {
-        public string uid { get; set; }
-        public string primaryKey { get; set; }
+        [JsonPropertyName("uid")]
+        public string Uid { get; set; }
+        [JsonPropertyName("primaryKey")]
+        public string PrimaryKey { get; set; }
     }
 }
