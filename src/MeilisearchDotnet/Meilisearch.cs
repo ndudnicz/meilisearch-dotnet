@@ -23,12 +23,6 @@ namespace MeilisearchDotnet
             Indexes = new Dictionary<string, MeilisearchDotnet.Index>();
         }
 
-        ~Meilisearch()
-        {
-            Indexes = null;
-            HttpClient.Dispose();
-        }
-
         /// <summary>
         /// Return an Index instance
         /// </summary>
