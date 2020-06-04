@@ -60,8 +60,8 @@ namespace console
 {
     public class Doc
     {
-        public int key1 { get; set; }
-        public string value { get; set; }
+        public int Key1 { get; set; }
+        public string Value { get; set; }
     }
     class Program
     {
@@ -70,41 +70,41 @@ namespace console
             Meilisearch ms = new Meilisearch("http://localhost:7700", "masterKey");
             MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest
             {
-                uid = "kero",
-                primaryKey = "key1"
+                Uid = "kero",
+                PrimaryKey = "Key1"
             });
 
             MeilisearchDotnet.Types.EnqueuedUpdate ret = await index.AddDocuments<Doc>(new List<Doc>() {
-                new Doc { key1 = 222, value = "aaa" },
-                new Doc { key1 = 333, value = "bbb" }
+                new Doc { Key1 = 222, Value = "aaa" },
+                new Doc { Key1 = 333, Value = "bbb" }
             });
 
             await index.WaitForPendingUpdate(ret.UpdateId);
 
             Doc doc = await index.GetDocument<Doc>("222");
 
-            // doc => { key1 = 222, value = "aaa" }
+            // doc => { Key1 = 222, Value = "aaa" }
 
             ret = await index.AddDocuments<Doc>(new List<Doc>() {
-                new Doc { key1 = 444, value = "aaa" },
-                new Doc { key1 = 555, value = "bbb" }
+                new Doc { Key1 = 444, Value = "aaa" },
+                new Doc { Key1 = 555, Value = "bbb" }
             }, new MeilisearchDotnet.Types.AddDocumentParams
             {
-                primaryKey = "key1"
+                PrimaryKey = "Key1"
             });
 
             await index.WaitForPendingUpdate(ret.UpdateId);
 
             ret = await index.UpdateDocuments(new List<Doc>() {
-                new Doc { key1 = 222, value = "tpayet" },
-                new Doc { key1 = 444, value = "tutu" }
+                new Doc { Key1 = 222, Value = "tpayet" },
+                new Doc { Key1 = 444, Value = "tutu" }
             });
 
             await index.WaitForPendingUpdate(ret.UpdateId);
 
             doc = await index.GetDocument<Doc>("222");
 
-            // doc => { key1 = 222, value = "tpayet" }
+            // doc => { Key1 = 222, Value = "tpayet" }
         }
     }
 }
@@ -116,7 +116,7 @@ namespace console
 // MeiliSearch is typo-tolerant:
 MeilisearchDotnet.Types.SearchResponse<Doc> result = await index.Search<Doc>("tpyaet");
 // result => {
-//   "Hits": [{"key1": 222,"value": "tpayet"}],
+//   "Hits": [{"Key1": 222,"Value": "tpayet"}],
 //   "Offset": 0,
 //   "Limit": 20,
 //   "ProcessingTimeMs": 1,
