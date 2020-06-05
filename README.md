@@ -68,7 +68,7 @@ namespace console
         static async Task Main(string[] args)
         {
             Meilisearch ms = new Meilisearch("http://localhost:7700", "masterKey");
-            MeilisearchDotnet.Index index = await ms.CreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            MeilisearchDotnet.Index index = await ms.GetOrCreateIndex(new MeilisearchDotnet.Types.IndexRequest
             {
                 Uid = "kero",
                 PrimaryKey = "Key1"
