@@ -34,12 +34,35 @@ namespace MeilisearchDotnet
             }
             else
             {
-                string url = "/indexes/" + indexUid;
-                MeilisearchDotnet.Types.IndexResponse indexResponses = await Get<MeilisearchDotnet.Types.IndexResponse>(url);
+                try
+                {
+                    string url = "/indexes/" + indexUid;
+                    MeilisearchDotnet.Types.IndexResponse indexResponses = await Get<MeilisearchDotnet.Types.IndexResponse>(url);
 
-                index = new Index(HttpClient, indexUid);
-                Indexes.Add(indexUid, index);
-                return index;
+                    index = new Index(HttpClient, indexUid);
+                    Indexes.Add(indexUid, index);
+                    return index;
+
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Try to get an index instance, create it if it does not exist and return it
+        /// </summary>
+        public async Task<MeilisearchDotnet.Index> GetOrCreateIndex(MeilisearchDotnet.Types.IndexRequest data)
+        {
+            try
+            {
+                return await GetIndex(data.Uid);
+            }
+            catch (MeilisearchDotnet.Exceptions.NotFoundException e)
+            {
+                return await CreateIndex(data);
             }
         }
 

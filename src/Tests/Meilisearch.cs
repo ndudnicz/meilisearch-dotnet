@@ -85,6 +85,24 @@ namespace MeilisearchTests
         }
 
         [Fact]
+        public async void GetOrCreateIndex()
+        {
+            string uid = "lalalalalalalalalala";
+            MeilisearchDotnet.Index index1 = await ms.GetOrCreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            {
+                Uid = uid
+            });
+            MeilisearchDotnet.Index index2 = await ms.GetOrCreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            {
+                Uid = uid
+            });
+            Assert.Equal(uid, index1.Uid);
+            Assert.Equal(uid, index2.Uid);
+            Assert.Same(index1, index2);
+            await ms.DeleteIndex(uid);
+        }
+
+        [Fact]
         public async void DeleteIndex()
         {
             string uid = "orek";
