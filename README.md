@@ -30,7 +30,7 @@
 ## 🔧 Installation
 It's available as NuGet package :
 ```bash
-dotnet add package MeilisearchDotnet --version 0.0.7
+dotnet add package MeilisearchDotnet --version 0.0.8
 ```
 [https://www.nuget.org/packages/MeilisearchDotnet](https://www.nuget.org/packages/MeilisearchDotnet)
 
