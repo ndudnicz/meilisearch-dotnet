@@ -68,13 +68,13 @@ namespace console
         static async Task Main(string[] args)
         {
             Meilisearch ms = new Meilisearch("http://localhost:7700", "masterKey");
-            MeilisearchDotnet.Index index = await ms.GetOrCreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            Index index = await ms.GetOrCreateIndex(new MeilisearchDotnet.Types.IndexRequest
             {
                 Uid = "kero",
                 PrimaryKey = "Key1"
             });
 
-            MeilisearchDotnet.Types.EnqueuedUpdate ret = await index.AddDocuments<Doc>(new List<Doc>() {
+            EnqueuedUpdate ret = await index.AddDocuments<Doc>(new List<Doc>() {
                 new Doc { Key1 = 222, Value = "aaa" },
                 new Doc { Key1 = 333, Value = "bbb" }
             });
@@ -114,7 +114,7 @@ namespace console
 
 ```csharp
 // MeiliSearch is typo-tolerant:
-MeilisearchDotnet.Types.SearchResponse<Doc> result = await index.Search<Doc>("tpyaet");
+SearchResponse<Doc> result = await index.Search<Doc>("tpyaet");
 // result => {
 //   "Hits": [{"Key1": 222,"Value": "tpayet"}],
 //   "Offset": 0,
