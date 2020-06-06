@@ -68,7 +68,7 @@ namespace console
         static async Task Main(string[] args)
         {
             Meilisearch ms = new Meilisearch("http://localhost:7700", "masterKey");
-            Index index = await ms.GetOrCreateIndex(new MeilisearchDotnet.Types.IndexRequest
+            Index index = await ms.GetOrCreateIndex(new IndexRequest
             {
                 Uid = "kero",
                 PrimaryKey = "Key1"
@@ -88,7 +88,7 @@ namespace console
             ret = await index.AddDocuments<Doc>(new List<Doc>() {
                 new Doc { Key1 = 444, Value = "aaa" },
                 new Doc { Key1 = 555, Value = "bbb" }
-            }, new MeilisearchDotnet.Types.AddDocumentParams
+            }, new AddDocumentParams
             {
                 PrimaryKey = "Key1"
             });
