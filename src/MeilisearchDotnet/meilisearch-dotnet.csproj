@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <None Include="../../LICENSE" Pack="true" PackagePath="$(PackageLicenseFile)" />
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.4" />
   </ItemGroup>
 
 </Project>
